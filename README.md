@@ -17,5 +17,6 @@
   * Compatible with [GearDecayModifier](https://github.com/Xpazeman/tld-gear-decay-modifier), but be aware that if you use BOTH to change bedroll decay, the efects are CUMULATIVE. 
 
 ## Credits
-
 Original creator of this mod : **Cass** (GruffCassquatch)
+
+[![Github All Releases](https://img.shields.io/github/downloads/RomainDeschampsFR/BedrollTweaker/total.svg)]()
