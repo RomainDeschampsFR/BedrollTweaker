@@ -3,9 +3,8 @@
     [HarmonyPatch(typeof(Bed), nameof(Bed.GetWarmthBonusCelsius))]
     internal class BedrollWarmthStackerBonus
     {
-        private static void Postfix(ref float __result)
+        private static void Postfix(Bed __instance, ref float __result)
         {
-            Bed __instance = new();
             List<float> totalbedrolls   = new();
             List<float> partial         = new();
 
@@ -29,8 +28,8 @@
                         totalbedrolls.Add(bed.m_WarmthBonusCelsius * bed.m_Bedroll.GetNormalizedCondition());
                         bedrollStack += (bed.m_WarmthBonusCelsius * bed.m_Bedroll.GetNormalizedCondition());
                     }
-                    break;
                 }
+
                 if (Settings.settings.maxBedrolls || Settings.settings.diminishingBonus || Settings.settings.partialBonus)
                 {
                     totalbedrolls.Sort();
@@ -55,29 +54,17 @@
                     if (Settings.settings.diminishingBonus)
                     {
                         bedrollStack = 0f;
-                        float mult = (1 - Settings.settings.diminishingRate);
-                        if (mult > 0) // check here instead of in the foreach
-                        { 
-                            foreach (float value in totalbedrolls)
-                            {
-                                bedrollStack += (value * mult);
-                                mult -= Settings.settings.diminishingRate;
-                            }
+                        float mult = 1 - Settings.settings.diminishingRate;
+                        foreach (float value in totalbedrolls)
+                        {
+                            bedrollStack += (value * mult);
+                            mult *= mult;
                         }
                     }
                 }
                 if (Settings.settings.capWarmthBonus) bedrollStack = Math.Min(bedrollStack, Settings.settings.warmthBonusCap);
 
-                __result = bedrollStack;
-            }
-            // Vanilla code
-            else
-            {
-                if (__instance.m_Bedroll)
-                {
-                    num *= __instance.m_Bedroll.GetNormalizedCondition();
-                }
-                __result = num;
+                __result += bedrollStack;
             }
         }
     }
