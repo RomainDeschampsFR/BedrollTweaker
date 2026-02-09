@@ -9,7 +9,7 @@ namespace BedrollTweaker
         {
             if (Utilities.NormalizeName(__instance.name) == "GEAR_MakeshiftBedroll")
             {
-                if (Settings.settings.tweakBedroll == Choice.Custom)
+                if (Settings.settings.tweakMakeshiftBedroll == Choice.Custom)
                 {
                     __instance.m_Bed.m_WarmthBonusCelsius = Settings.settings.makeshiftBedrollWarmth;
                     __instance.WeightKG = ItemWeight.FromKilograms(Settings.settings.makeshiftBedrollWeight);
